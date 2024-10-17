@@ -87,7 +87,6 @@ if not "!connection!"=="" (
 	if "!connection:~-6!"=="device" (
    	     set "deviceId=!connection:~0,-6!"
              break
-
 	) else (
 		if "!connection:~-8!"=="recovery" (
 	     		set "deviceId=!connection:~0,-8!"
