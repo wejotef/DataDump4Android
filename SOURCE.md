@@ -181,7 +181,6 @@ for /f "delims=" %%i in ('"!ADB_CLIENT!"-s !deviceId! shell "find / -type f -nam
 		if "!outputPath!"=="/data/data/com.termux/files/usr/bin/su" (
 			rem Ignore it
 			set "outputPath="
-
 		) else (
 			if "!outputPath!"=="/data/user/0/com.termux/files/usr/bin/su" (
 				rem Ignore it
