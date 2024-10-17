@@ -13,13 +13,11 @@ set "userID=0"
 set "leave=0"
 set "indent=   "
 set "delimiter=|"
-
 call :show_purpose_prequistes_screen leave
 if "!leave!"=="1" ( goto :quit )
 call :show_copyright_license_screen leave
 if "!leave!"=="1" ( goto :quit )
 cls
-
 set /a step=0
 echo(
 echo Prepairing...
@@ -159,7 +157,6 @@ if "!adbSecure!"=="0" (
 	)
 )
 set "adbSecure=" & set "adbDebuggabe="
-
 if !adbRunsAsRoot! equ 0 (
 	echo NOK
 ) else (
@@ -269,7 +266,6 @@ if !fbeEnabled! equ 1 (
 	echo OK
 )
 set "cryptoState=" & set "adbCmd="
-
 ::
 echo(
 set /a step+=1
@@ -308,7 +304,6 @@ for /f %%a in ('"!ADB_CLIENT!" -s !deviceId! shell "!adbCmd!"') do (
 			set "spaceUsedMB=!spaceUsedKB:~0,-3!"
 		) else (
 			set "spaceUsedMB=1"
-
 		)
 	)
 	set /a cntSharedFolders+=1
@@ -338,7 +333,6 @@ if not exist "!backupFolder!" (
 )
 echo OK
 set "dateTime=" & set "year=" & set "month=" & set "day="
-
 timeout /T 3 > nul
 cls
 echo(
@@ -387,9 +381,7 @@ if not "%choice%"=="!cntItems!" (
 	)
 )
 set "neededBackupSpaceKB=" & set "strLength=" & set "directory=" & set "choice="
-
-
-timeout /T 3 > nul
+imeout /T 3 > nul
 cls
 echo(
 echo Processing...
