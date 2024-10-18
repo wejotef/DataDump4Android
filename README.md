@@ -18,3 +18,9 @@ You can choose specific folders or select to back up all available data.
 The script will display the progress of the backup process.
 
 After the backup is complete, the script will show how many files were successfully transferred and how many failed.
+
+
+# What the script does not:
+
+If multiple devices (e.g. using a USB hub) are connected then interacting with each device individually via ADB is NOT supported: Only the first of the devices connected is focused.
+
