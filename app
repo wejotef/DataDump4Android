@@ -555,15 +555,16 @@ endlocal & set "%2=%length%"
 goto :EOF
 ::
 :dump_directory
+setlocal
 set "dirToDump=%~1"
+set "backupLocation=!backupFolder\!dirToDump!"
+cmd /C mkdir "!backupLocation!"
 set "cmd=ls -l -R -A /!dirToDump!"
 if !adbClientGotRooted! equ 0 (	call :add_su_to_adb_cmd "!cmd!" )
 for /f "skip=1 tokens=9 delims= " %%a in ('"!ADB_CLIENT!" -s !deviceId! shell "!cmd!"') do (
 	set "dumpFilePath=%%a"
 	set "dumpFileName=%~nX%dumpFilePath%
  	set "dumpFile=!androidTmpStorage!/!dumpFileName!"
-	set "backupLocation=!backupFolder\!dmpDir!"
-	cmd /C mkdir "!backupLocation!"
 	if !fbeEnabled! equ 1 (
 		set "adb ShellCommand=cat !dumpFilePath! > !dumpFile!"
 		if !adbClientGotRooted! equ 0 (	call :wrap_adb_shell_cmd "!adbShellCommand!" )
@@ -574,5 +575,6 @@ for /f "skip=1 tokens=9 delims= " %%a in ('"!ADB_CLIENT!" -s !deviceId! shell "!
        		"!ADB_CLIENT!" -s !deviceId! pull "!dumpFilePath!" "!backupLocation!" > nul && ( set /a cntFilesTransferred+=1 ) || ( set /a cntFilesnotTransferred+=1 )
 	)
 )
+endlocal
 goto :EOF
 ::
