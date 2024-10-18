@@ -1,4 +1,5 @@
-# Source code of DataDump4Android
+:: Source code of DataDump4Android
+::
 @echo off & setlocal enabledelayedexpansion
 :: Set location of batch file
 set "wrkPath=%~dp0"
@@ -7,6 +8,7 @@ pushd %wrkPath%
 ::
 set "backupFolderBase=%TEMP%"
 set "this=%~n0"
+title !this! 
 set /a dumpAll=0
 set /a cntFilesTransferred=0
 set /a cntFilesnotTransferred=0
@@ -559,14 +561,14 @@ setlocal
 set "dirToDump=%~1"
 set "backupLocation=!backupFolder\!dirToDump!"
 cmd /C mkdir "!backupLocation!"
-set "cmd=ls -l -R -A /!dirToDump!"
-if !adbClientGotRooted! equ 0 (	call :add_su_to_adb_cmd "!cmd!" )
-for /f "skip=1 tokens=9 delims= " %%a in ('"!ADB_CLIENT!" -s !deviceId! shell "!cmd!"') do (
+set "adbShellCommand=ls -l -R -A /!dirToDump!"
+if !adbClientGotRooted! equ 0 (	call :add_su_to_adb_cmd "!adbShellCommand!" )
+for /f "skip=1 tokens=9 delims= " %%a in ('"!ADB_CLIENT!" -s !deviceId! shell "!adbShellCommand!"') do (
 	set "dumpFilePath=%%a"
 	set "dumpFileName=%~nX%dumpFilePath%
  	set "dumpFile=!androidTmpStorage!/!dumpFileName!"
 	if !fbeEnabled! equ 1 (
-		set "adb ShellCommand=cat !dumpFilePath! > !dumpFile!"
+		set "adbShellCommand=cat !dumpFilePath! > !dumpFile!"
 		if !adbClientGotRooted! equ 0 (	call :wrap_adb_shell_cmd "!adbShellCommand!" )
 		"!ADB_CLIENT!" -s !deviceId! shell "!adbShellCommand!"
         	"!ADB_CLIENT!" -s !deviceId! pull "!dumpFile!" "!backupLocation!" > nul && ( set /a cntFilesTransferred+=1 ) || ( set /a cntFilesnotTransferred+=1 )
@@ -574,6 +576,7 @@ for /f "skip=1 tokens=9 delims= " %%a in ('"!ADB_CLIENT!" -s !deviceId! shell "!
 	) else (
        		"!ADB_CLIENT!" -s !deviceId! pull "!dumpFilePath!" "!backupLocation!" > nul && ( set /a cntFilesTransferred+=1 ) || ( set /a cntFilesnotTransferred+=1 )
 	)
+	title !this! [OK: !cntFilesTransferred! NOK: !cntFilesnotTransferred!]
 )
 endlocal
 goto :EOF
